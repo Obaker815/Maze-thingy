@@ -38,6 +38,7 @@
             Name = "MazeForm";
             Text = "Form1";
             Shown += MazeForm_Shown;
+            KeyDown += MazeForm_KeyDown;
             ResumeLayout(false);
         }
 

@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Windows.Forms;
-using Timer = System.Windows.Forms.Timer;
 
 namespace Maze_thingy
 {
@@ -26,10 +21,10 @@ namespace Maze_thingy
         private IEnumerator<(int X, int Y)>? _searchSteps;
 
         private readonly int _cellSize  = 14;
-        private readonly int _padding   = 14;
+        private readonly int _padding   = 10;
 
-        private readonly int _width     = 50;
-        private readonly int _height    = 50;
+        private readonly int _width     = 20;
+        private readonly int _height    = 10;
 
         // Generation animation
         private (int fromX, int fromY, int x, int y)? _lastGenStep;
@@ -189,7 +184,7 @@ namespace Maze_thingy
         {
             if (_maze is null)
             {
-                MazeForm_Shown(new(), e); 
+                MazeForm_Shown(new(), e);
             }
             base.OnPaint(e);
 
@@ -308,7 +303,7 @@ namespace Maze_thingy
             Task.Run(() =>
             {
                 Stopwatch elapsedsw = Stopwatch.StartNew();
-                while ( true )
+                while (true)
                 {
                     elapsedsw.Restart();
                     try
@@ -324,6 +319,14 @@ namespace Maze_thingy
                         continue;
                 }
             });
+        }
+
+        private void MazeForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                Application.Exit();
+            }
         }
     }
 }
