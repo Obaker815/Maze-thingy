@@ -20,11 +20,11 @@ namespace Maze_thingy
         private MazeSolver? _solver;
         private IEnumerator<(int X, int Y)>? _searchSteps;
 
-        private readonly int _cellSize  = 14;
+        private readonly int _cellSize  = 20;
         private readonly int _padding   = 10;
 
-        private readonly int _width     = 20;
-        private readonly int _height    = 10;
+        private readonly int _width     = 40;
+        private readonly int _height    = 40;
 
         // Generation animation
         private (int fromX, int fromY, int x, int y)? _lastGenStep;
@@ -52,6 +52,9 @@ namespace Maze_thingy
                 _padding * 2 + _width * _cellSize + 1,
                 _padding * 2 + _height * _cellSize + 1
             );
+
+            _maze = null!;
+            _generator = null!;
 
         }
 
@@ -197,8 +200,8 @@ namespace Maze_thingy
             using var startBrush = new SolidBrush(Color.LimeGreen);
             using var endBrush = new SolidBrush(Color.Gold);
 
-            int width = _maze.Width;
-            int height = _maze.Height;
+            int width = _maze!.Width;
+            int height = _maze!.Height;
 
             // Draw visited cells (search animation) as a light overlay
             if (_state == MazeState.Searching || _state == MazeState.DrawingSolution || _state == MazeState.ShowingSolution)

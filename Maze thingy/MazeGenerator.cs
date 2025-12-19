@@ -1,4 +1,6 @@
-﻿namespace Maze_thingy
+﻿using System.DirectoryServices.ActiveDirectory;
+
+namespace Maze_thingy
 {
     internal class MazeGenerator
     {
@@ -130,6 +132,62 @@
             }
 
             _maze.End = (endX, endY);
+
+            string[] keys      = { "N", "S", "E", "W" };
+            string[] opposite  = { "S", "N", "W", "E" };
+
+            // Carve internal walls
+            for (int i = 1; i < width - 1; i++)
+            {
+                for (int j = 1; j < height - 1; j++)
+                {
+                    Cell c = _maze.Cells[i, j];
+
+                    for (int k = 0; k < 4; k++)
+                    {
+                        string key = keys[k];
+                        string opp = opposite[k];
+
+                        // If wall exists and random chance allows removal
+                        if (c.walls[key] && _rng.Next(50) == 0)
+                        {
+                            c.walls[key] = false;
+
+                            // Remove wall on neighbor cell
+                            switch (key)
+                            {
+                                case "N":
+                                    _maze.Cells[i, j - 1].walls[opp] = false;
+                                    break;
+
+                                case "S":
+                                    _maze.Cells[i, j + 1].walls[opp] = false;
+                                    break;
+
+                                case "E":
+                                    _maze.Cells[i + 1, j].walls[opp] = false;
+                                    break;
+
+                                case "W":
+                                    _maze.Cells[i - 1, j].walls[opp] = false;
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            for (int x = 0; x < width; x++)
+                _maze.Cells[x, 0].walls["N"] = true;
+
+            for (int y = 0; y < height; y++)
+                _maze.Cells[0, y].walls["W"] = true;
+
+            for (int x = 0; x < width; x++)
+                _maze.Cells[x, height - 1].walls["S"] = true;
+
+            for (int y = 0; y < height; y++)
+                _maze.Cells[width - 1, y].walls["E"] = true;
         }
     }
 }
